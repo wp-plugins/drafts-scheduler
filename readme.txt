@@ -9,7 +9,7 @@ Stable tag: 1.7
 Sequentially or randomly schedule ALL draft posts for posting.
 
 == Description ==
-Last updated Oct 8, 2011. Ignore the date on the right.
+Last updated to 1.7 on Jan 2, 2012. Ignore the date on the right.
 
 Ever imported or written a whole bunch of posts in draft status, then realized you needed to post them all over time?
 
@@ -58,6 +58,9 @@ Again, sorry, not in this version. In the future, it would be easy to add.
 
 
 == Changelog ==
+= 1.7 =
+- Fixed the bug where random posts where only posting in the AM.
+
 = 1.6 =
 - Added Brian Zeligson's code contribution allowing randomly posting a number of posts per WEEK or per MONTH instead of just per DAY.
 - Minor code cleanup
