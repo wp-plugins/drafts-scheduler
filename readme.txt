@@ -3,8 +3,8 @@ Contributors: talus
 Donate link: http://www.installedforyou.com/wordpress/drafts-scheduler-plugin/
 Tags: drafts, scheduling, posts, schedule
 Requires at least: 2.8
-Tested up to: 3.2
-Stable tag: 1.6
+Tested up to: 3.3
+Stable tag: 1.7
 
 Sequentially or randomly schedule ALL draft posts for posting.
 
