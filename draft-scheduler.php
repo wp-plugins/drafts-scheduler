@@ -218,7 +218,7 @@ if (!class_exists('DraftScheduler')) {
                             <th scope="row">Schedule Start Date</th>
                             <td>
                                 <div id="datepicker"></div>
-                                <input type="text" name="startDate" id="startDate" size="31" value="<?php echo $_POST['startDate']; ?>" />
+                                <input type="text" name="startDate" id="startDate" size="31" value="<?php if( isset( $_POST['startDate'] ) ) echo $_POST['startDate']; ?>" />
                                 <br />
                                 Note: if you schedule starts "Today" then posting will start from midnight, including before "now."<br />You may wish to start tomorrow.
                             </td>
@@ -294,7 +294,7 @@ if (!class_exists('DraftScheduler')) {
                 $postsToday = $exactPosts;
             }
 
-            $startPosts = date_i18n( 'Y-n-j g:i:s', strtotime($startDate . ' ' . $startTime));
+            $startPosts = date_i18n( 'Y-n-j G:i:s', strtotime($startDate . ' ' . $startTime));
 
             $randInterval = (strtotime($endTime) - strtotime($startTime));
 
@@ -316,20 +316,20 @@ if (!class_exists('DraftScheduler')) {
 		    $weightedAdd = rand( 0, 3 );
 		    if ( $weightedAdd != 3 ) $weekSplit = $weekSplit + $weightedAdd;
 		    $weekSplit <= 1 ? $incrementDays = '+1 day' : $incrementDays = "+$weekSplit days";
-		    $startPosts = date_i18n( 'Y-n-j g:i:s', strtotime( $incrementDays, strtotime( $startPosts ) ) );   
+		    $startPosts = date_i18n( 'Y-n-j G:i:s', strtotime( $incrementDays, strtotime( $startPosts ) ) );   
 		} elseif ($dayweekmonth == 'week') {
 		    $weekSplit = floor( 7/$dailyMax );
 		    $weekSplit = $weekSplit + rand( 0, 1 );
 		    $weekSplit <= 1 ? $incrementDays = '+1 day' : $incrementDays = "+$weekSplit days";
-		    $startPosts = date_i18n( 'Y-n-j g:i:s', strtotime( $incrementDays, strtotime( $startPosts ) ) );   
+		    $startPosts = date_i18n( 'Y-n-j G:i:s', strtotime( $incrementDays, strtotime( $startPosts ) ) );   
 		} else {
 		    if ( 0 >= $postsToday ){
 			if ( "" <> $dailyMax ){
 			    $postsToday = rand( 0, $dailyMax * 100 ) / 100;
-			    $startPosts = date_i18n( 'Y-n-j g:i:s', strtotime( "+1 day", strtotime( $startPosts ) ) );
+			    $startPosts = date_i18n( 'Y-n-j G:i:s', strtotime( "+1 day", strtotime( $startPosts ) ) );
 			} else {
 			    $postsToday = $exactPosts;
-			    $startPosts = date_i18n( 'Y-n-j g:i:s', strtotime( "+1 day", strtotime( $startPosts ) ) );
+			    $startPosts = date_i18n( 'Y-n-j G:i:s', strtotime( "+1 day", strtotime( $startPosts ) ) );
 			}
 		    }
 		}
