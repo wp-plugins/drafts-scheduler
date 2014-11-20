@@ -4,7 +4,7 @@ Donate link: http://www.installedforyou.com/wordpress/drafts-scheduler-plugin/
 Tags: drafts, scheduling, posts, schedule
 Requires at least: 2.8
 Tested up to: 4.0
-Stable tag: 1.8
+Stable tag: 1.9
 
 Sequentially or randomly schedule ALL draft posts for posting.
 
@@ -27,6 +27,8 @@ Usage:
 * New - Choose the number of random posts per DAY, per WEEK or per MONTH! Thanks to Brian Zeligson for contributing this code.
 
 NB: I've said it before - ALL drafts will be scheduled, but there is now an undo option.
+
+Want to help? The code is now on BitBucket for anyone to fork! https://bitbucket.org/jeffrose/drafts-scheduler
 
 == Installation ==
 
@@ -56,6 +58,9 @@ Again, sorry, not in this version. In the future, it would be easy to add.
 
 
 == Changelog ==
+= 1.9 =
+- Fixed a problem with Datepicker not enqueing properly
+
 = 1.8 =
 - NEW: Select a custom post type to schedule! Thanks for the suggestion everyone!
 - Remove most use of $wpdb, so overall it's more "WordPress-y" in function. Yay.
