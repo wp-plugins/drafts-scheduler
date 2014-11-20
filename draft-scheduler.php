@@ -5,7 +5,7 @@ Plugin URI: http://www.installedforyou.com/draftscheduler
 Contributors: talus
 Description: Allows WordPress admins to bulk schedule posts currently saved as drafts
 Author: Jeff Rose
-Version: 1.8
+Version: 1.9
 Author URI: http://www.installedforyou.com
 Tags: drafts, schedule, posts
 License: GPL2
@@ -30,7 +30,7 @@ License: GPL2
 
 if ( ! class_exists( 'DraftScheduler' ) ) {
 
-	define ( 'IFDS_VERSION', '1.8' );
+	define ( 'IFDS_VERSION', '1.9' );
 	define( 'DraftScheduler_root', WP_PLUGIN_URL . '/drafts-scheduler/' );
 
 	class DraftScheduler{
@@ -555,6 +555,12 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 } // End If
 
 $draftScheduler = new DraftScheduler();
+
+add_action( 'admin_enqueue_scripts', 'theme_admin_js' );
+function theme_admin_js(){
+	wp_enqueue_script('jquery-ui-core');
+	wp_enqueue_script('jquery-ui-datepicker');
+}
 
 function j_is_date( $str ) {
 	$stamp = strtotime( $str );
