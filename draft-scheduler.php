@@ -5,7 +5,7 @@ Plugin URI: http://www.installedforyou.com/draftscheduler
 Contributors: talus
 Description: Allows WordPress admins to bulk schedule posts currently saved as drafts
 Author: Jeff Rose
-Version: 1.9
+Version: 1.9.1
 Author URI: http://www.installedforyou.com
 Tags: drafts, schedule, posts
 License: GPL2
@@ -30,7 +30,7 @@ License: GPL2
 
 if ( ! class_exists( 'DraftScheduler' ) ) {
 
-	define ( 'IFDS_VERSION', '1.9' );
+	define ( 'IFDS_VERSION', '1.9.1' );
 	define( 'DraftScheduler_root', WP_PLUGIN_URL . '/drafts-scheduler/' );
 
 	class DraftScheduler{
@@ -228,6 +228,8 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 			}
 			$draftCount = $this->draftScheduler_check_for_drafts();
 			if ( 0 != $draftCount ) {
+				$start_date = isset( $_POST['startDate'] ) ? $_POST['startDate'] : '';
+				$randomness = isset( $_POST['randomness'] ) ? $_POST['randomness'] : 'random';
 				?>
 				<form method="post">
 					<?php wp_nonce_field( 'do-schedule-drafts' ); ?>
@@ -242,7 +244,7 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 							<th scope="row">Schedule Start Date</th>
 							<td>
 								<div id="datepicker"></div>
-								<input type="text" name="startDate" id="startDate" size="31" value="<?php echo $_POST['startDate']; ?>"/>
+								<input type="text" name="startDate" id="startDate" size="31" value="<?php echo esc_attr( $start_date ); ?>"/>
 								<br/>
 								Note: if your schedule starts "Today" then posting will start from midnight, including before "now."<br/>You may wish to start tomorrow.
 							</td>
@@ -250,17 +252,17 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 						<tr valign="top">
 							<th scope="row">Posting order</th>
 							<td>
-								<input type="radio" name="randomness" value="random" <?php checked( $_POST['randomness'], 'random', true );
-								checked( $_POST['randomness'], '', true ); ?>> Randomly grab any draft in any order<br/>
-								<input type="radio" name="randomness" value="sequential" <?php checked( $_POST['randomness'], 'sequential', true ); ?>> Sequentially schedule drafts from oldest to
+								<input type="radio" name="randomness" value="random" <?php checked( $randomness, 'random', true );
+								checked( $randomness, '', true ); ?>> Randomly grab any draft in any order<br/>
+								<input type="radio" name="randomness" value="sequential" <?php checked( $randomness, 'sequential', true ); ?>> Sequentially schedule drafts from oldest to
 								newest in order
 							</td>
 						</tr>
 						<tr valign="top">
 							<th scope="row">Post interval</th>
 							<td>
-								<input type="text" name="intHours" id="intHours" size="4" maxlength="2" value="<?php echo $_POST['intHours']; ?>"/><strong>hrs</strong>
-								<input type="text" name="intMins" id="intMins" size="4" maxlength="2" value="<?php echo $_POST['intMins']; ?>"/><strong>mins</strong>
+								<input type="text" name="intHours" id="intHours" size="4" maxlength="2" value="<?php echo isset( $_POST['intHours'] ) ? absint( $_POST['intHours'] ) : ''; ?>"/><strong>hrs</strong>
+								<input type="text" name="intMins" id="intMins" size="4" maxlength="2" value="<?php echo isset( $_POST['intMins'] ) ? absint( $_POST['intMins'] ) : ''; ?>"/><strong>mins</strong>
 							</td>
 						</tr>
 
@@ -273,25 +275,25 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 						<tr valign="top">
 							<th scope="row">Post Randomly</th>
 							<td>
-								<input type="radio" name="randomness" value="fullrandom" <?php if ( $_POST['randomness'] == "fullrandom" ) {
+								<input type="radio" name="randomness" value="fullrandom" <?php if ( $randomness == "fullrandom" ) {
 									echo " checked ";
 								} ?>> Surprise me <em>(posts entirely randomly after the date above, but within the times below)</em><br/>
-								Post up to <input type="text" name="postsperday" id="postsperda" value="<?php echo $_POST['postsperday']; ?>" size="3" maxlength="3"/> posts per
+								Post up to <input type="text" name="postsperday" id="postsperday" value="<?php echo isset( $_POST['postsperday'] ) ? absint( $_POST['postsperday'] ) : ''; ?>" size="3" maxlength="3"/> posts per
 								<select name="dayweekmonth">
 									<option value="day">day</option>
 									<option value="week">week</option>
 									<option value="month">month</option>
 								</select> <strong>OR</strong>
-								Post exactly <input type="text" name="exactPosts" id="exactPosts" value="<?php echo $_POST['exactPosts']; ?>" size="3" maxlength="3"/> posts per day<br/>
+								Post exactly <input type="text" name="exactPosts" id="exactPosts" value="<?php echo isset( $_POST['exactPosts'] ) ? absint( $_POST['exactPosts'] ) : ''; ?>" size="3" maxlength="3"/> posts per day<br/>
 								Randomly after:
 								<select name="startTime" id="startTime">
 									<option value="">Choose a time</option>
-									<?php echo self::createDateTimeDropDowns( $_POST['startTime'] ); ?>
+									<?php echo self::createDateTimeDropDowns( isset( $_POST['startTime'] ) ? $_POST['startTime'] : '' ); ?>
 								</select><br/>
 								And before:
 								<select name="endTime" id="endTime">
 									<option value="">Choose a time</option>
-									<?php echo self::createDateTimeDropDowns( $_POST['endTime'] ); ?>
+									<?php echo self::createDateTimeDropDowns( isset( $_POST['endTime'] ) ? $_POST['endTime'] : '' ); ?>
 								</select><br/>
 							</td>
 						</tr>
@@ -321,6 +323,8 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 			} else {
 				$postsToday = $exactPosts;
 			}
+
+
 
 			$startPosts = date_i18n( 'Y-n-j g:i:s', strtotime( $startDate . ' ' . $startTime ) );
 
@@ -371,7 +375,7 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 				$thisDraft = array_pop( $draftList );
 
 				$postRandom = rand( 0, $randInterval );
-				$postTime   = date_i18n( 'Y-n-j G:i:s', strtotime( "+" . $postRandom . " seconds", strtotime( $startPosts ) ) );
+				$postTime   = date_i18n( 'Y-m-d G:i:s', strtotime( "+" . $postRandom . " seconds", strtotime( $startPosts ) ) );
 
 				$this->update_post_details( strtotime( $postTime ), $thisDraft->ID );
 				$whole_post = get_post( $thisDraft->ID );
@@ -472,11 +476,11 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 		} // End Function draftScheduler_sequential_post_by_interval
 
 		function update_post_details( $ds_postDate, $draftID ) {
-			$ds_gmt = get_gmt_from_date( date( 'Y-n-j G:i:s', $ds_postDate ) );
+			$ds_gmt = get_gmt_from_date( date( 'Y-m-d G:i:s', $ds_postDate ) );
 
 			$update_date = array(
 				'ID'            => $draftID,
-				'post_date'     => date_i18n( 'Y-n-j G:i:s', $ds_postDate ),
+				'post_date'     => date_i18n( 'Y-m-d G:i:s', $ds_postDate ),
 				'post_date_gmt' => $ds_gmt,
 				'post_status'   => 'future',
 				'edit_date'     => true
@@ -557,9 +561,9 @@ if ( ! class_exists( 'DraftScheduler' ) ) {
 $draftScheduler = new DraftScheduler();
 
 add_action( 'admin_enqueue_scripts', 'theme_admin_js' );
-function theme_admin_js(){
-	wp_enqueue_script('jquery-ui-core');
-	wp_enqueue_script('jquery-ui-datepicker');
+function theme_admin_js() {
+	wp_enqueue_script( 'jquery-ui-core' );
+	wp_enqueue_script( 'jquery-ui-datepicker' );
 }
 
 function j_is_date( $str ) {
