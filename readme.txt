@@ -3,8 +3,8 @@ Contributors: talus
 Donate link: http://www.installedforyou.com/wordpress/drafts-scheduler-plugin/
 Tags: drafts, scheduling, posts, schedule
 Requires at least: 2.8
-Tested up to: 4.1
-Stable tag: 1.9.1
+Tested up to: 4.1.1
+Stable tag: 1.9.2
 
 Sequentially or randomly schedule ALL draft posts for posting.
 
@@ -58,6 +58,9 @@ Again, sorry, not in this version. In the future, it would be easy to add.
 
 
 == Changelog ==
+= 1.9.2 =
+- Version bump to make sure the most recent code is downloading
+
 = 1.9.1 =
 - Fixed a problem with date formats causing days to be skipped and other errors (hidden error).
 
